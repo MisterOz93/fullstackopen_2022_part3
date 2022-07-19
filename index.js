@@ -37,12 +37,23 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
 
   const data = req.body
-  
+
   if (!data.name) {
     return res.status(400).json({
       error: "You must include a name for the entry."
     })
+  } 
+  if (!data.number){
+    return res.status(400).json({
+      error: "You must include a number for the entry."
+    })
   }
+  if (persons.map(person => person.name).includes(data.name)){
+    return res.status(400).json({
+      error: "The name must be unique"
+    })
+  }
+
   const newPerson = {
     id: Math.floor(Math.random() * 100000),
     name: data.name,
