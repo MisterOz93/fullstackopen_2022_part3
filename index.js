@@ -5,8 +5,18 @@ const app = express()
 
 let persons = require('./persons')
 
+
 app.use(express.json())
-app.use(morgan('tiny'))
+
+app.use(morgan('tiny', {
+  skip: function (req, res) {return req.method === 'POST'}
+}))
+
+morgan.token('data', (req, res) => {return JSON.stringify(req.body)})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data', {
+  skip: function (req, res) {return req.method !== 'POST'}
+}))
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)
