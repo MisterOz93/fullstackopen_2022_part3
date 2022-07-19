@@ -12,6 +12,18 @@ app.get('/info', (req, res) => {
   res.send(info + new Date())
 })
 
+app.get('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(p => p.id === id)
+  if (person){
+    res.json(person)
+  }
+  else {
+    res.statusMessage = "Person was not found"
+    res.status(404).end()
+  }
+})
+
 const PORT = 3001
 
 app.listen(PORT, () => {
