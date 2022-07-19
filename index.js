@@ -1,6 +1,9 @@
+const { json } = require('express')
 const express = require('express')
 const app = express()
 let persons = require('./persons')
+
+app.use(express.json())
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)
@@ -29,6 +32,27 @@ app.delete('/api/persons/:id', (req, res) => {
   persons = persons.filter(person => person.id !== id)
   res.status(204).end()
 })
+
+
+app.post('/api/persons', (req, res) => {
+
+  const data = req.body
+  
+  if (!data.name) {
+    return res.status(400).json({
+      error: "You must include a name for the entry."
+    })
+  }
+  const newPerson = {
+    id: Math.floor(Math.random() * 100000),
+    name: data.name,
+    number: data.number,
+  }
+
+  persons = persons.concat(newPerson)
+  res.json(newPerson)
+})
+
 
 const PORT = 3001
 
