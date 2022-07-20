@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/MisterOz93/part3_fullstackopen_2022#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "morgan": "^1.10.0"
   },

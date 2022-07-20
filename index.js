@@ -1,12 +1,13 @@
-const { json } = require('express')
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 let persons = require('./persons')
 
 
 app.use(express.json())
+app.use(cors())
 
 app.use(morgan('tiny', {
   skip: function (req, res) {return req.method === 'POST'}
