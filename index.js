@@ -8,6 +8,7 @@ let persons = require('./persons')
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('build'))
 
 app.use(morgan('tiny', {
   skip: function (req, res) {return req.method === 'POST'}
