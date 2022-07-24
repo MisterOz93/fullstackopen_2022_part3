@@ -65,20 +65,12 @@ app.post('/api/persons', (req, res) => {
       error: "You must include a number for the entry."
     })
   }
-  if (persons.map(person => person.name).includes(data.name)){
-    return res.status(400).json({
-      error: "The name must be unique"
-    })
-  }
 
-  const newPerson = {
-    id: Math.floor(Math.random() * 100000),
+  const newPerson = new Person({
     name: data.name,
     number: data.number,
-  }
-
-  persons = persons.concat(newPerson)
-  res.json(newPerson)
+  })
+  newPerson.save().then(savedPerson => res.json(savedPerson))
 })
 
 
