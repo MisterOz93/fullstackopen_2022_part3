@@ -22,19 +22,21 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :d
   skip: function (req, res) {return req.method !== 'POST'}
 }))
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
   Person.find({}).then(persons => res.json(persons))
+  .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.find({}).then(persons => {
     const pluralCheck = persons.length === 1 ? 'person' : 'people'
     const info = `<p>Phonebook has info for ${persons.length} ${pluralCheck} </p>`
     res.send(info + new Date())
   })
+  .catch(error => next(error))
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res) => { //need to update to work w db
   const id = Number(req.params.id)
   const person = persons.find(p => p.id === id)
   if (person){
