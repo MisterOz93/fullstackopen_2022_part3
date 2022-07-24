@@ -5,7 +5,7 @@ const cors = require('cors')
 const Person = require('./models/person')
 const app = express()
 
-let persons = require('./persons')
+let persons = require('./persons') //delete after db fully integrated
 
 
 app.use(express.json())
@@ -23,7 +23,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :d
 }))
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(persons => res.json(persons))
 })
 
 app.get('/info', (req, res) => {
