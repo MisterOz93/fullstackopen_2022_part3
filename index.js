@@ -53,17 +53,6 @@ app.post('/api/persons', (req, res, next) => {
 
   const data = req.body
 
-  if (!data.name) {
-    return res.status(400).json({
-      error: "You must include a name for the entry."
-    })
-  } 
-  if (!data.number){
-    return res.status(400).json({
-      error: "You must include a number for the entry."
-    })
-  }
-
   const newPerson = new Person({
     name: data.name,
     number: data.number,
@@ -74,10 +63,12 @@ app.post('/api/persons', (req, res, next) => {
 
 app.put('/api/persons/:id', (req, res, next) => {
   const person = {
-    content: req.body.content,
+    name: req.body.name,
     number: req.body.number
   }
-  Person.findByIdAndUpdate(req.params.id, person, {new: true})
+  console.log('req is', person)
+  Person.findByIdAndUpdate(req.params.id, person,
+     {new: true, runValidators: true, context: 'query'})
   .then(result => res.json(result))
   .catch(error => next(error))
 })
