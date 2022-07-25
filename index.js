@@ -5,8 +5,6 @@ const cors = require('cors')
 const Person = require('./models/person')
 const app = express()
 
-let persons = require('./persons') //delete after db fully integrated
-
 
 app.use(express.json())
 app.use(cors())
