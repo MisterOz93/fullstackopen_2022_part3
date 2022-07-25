@@ -36,16 +36,12 @@ app.get('/info', (req, res, next) => {
   .catch(error => next(error))
 })
 
-app.get('/api/persons/:id', (req, res) => { //need to update to work w db
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id === id)
-  if (person){
-    res.json(person)
-  }
-  else {
-    res.statusMessage = "Person was not found"
-    res.status(404).end()
-  }
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id).then(result => {
+    console.log(result)
+    res.json(result)
+  })
+  .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
@@ -78,11 +74,21 @@ app.post('/api/persons', (req, res, next) => {
   .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (req, res, next) => {
+  const person = {
+    content: req.body.content,
+    number: req.body.number
+  }
+  Person.findByIdAndUpdate(req.params.id, person, {new: true})
+  .then(result => res.json(result))
+  .catch(error => next(error))
+})
+
 
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
+    return res.status(400).send({ error: 'malformatted id' })
   } 
   next(error)
 }
