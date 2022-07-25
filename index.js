@@ -84,6 +84,11 @@ app.put('/api/persons/:id', (req, res, next) => {
   .catch(error => next(error))
 })
 
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({error: "Unknown Endpoint"})
+}
+
+app.use(unknownEndpoint)
 
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
