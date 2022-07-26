@@ -57,8 +57,16 @@ app.post('/api/persons', (req, res, next) => {
     name: data.name,
     number: data.number,
   })
-  newPerson.save().then(savedPerson => res.json(savedPerson))
-  .catch(error => next(error))
+
+  Person.exists({name: newPerson.name}).then(result => {
+    if (result === null){
+      newPerson.save().then(savedPerson => res.json(savedPerson))
+      .catch(error => next(error))
+    }
+    else {
+      res.status(400).send(`${newPerson.name} is already in the phonebook`)
+    }
+  })
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
