@@ -13,7 +13,32 @@ const personSchema = new mongoose.Schema({
   },
   number:{
     type: String,
-    required: true
+    required: true,
+    minLength: 8,
+    validate: {
+      validator: function(v) {
+        
+        const checkFormat = (phoneNumber) => {
+          const hyphenCheck = phoneNumber.split('').filter(digit => digit === '-')
+          if (hyphenCheck.length === 1){
+            const parts = phoneNumber.split('-')
+            if (parts[0].length < 2 || parts[0].length > 3){
+              return false
+            }
+            if (parts[1].split('').filter(p => !isNaN(p)).length !== parts[1].split('').length){
+              return false
+            }
+          }
+          if (hyphenCheck.length > 1){
+            return false
+          }
+          return true
+        }
+
+      return checkFormat(v)
+      },
+      message: () => `Phone numbers may only include 1 hyphen and must have either 2 or 3 digits before the hyphen.`
+    }
   } 
 })
 
