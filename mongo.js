@@ -11,17 +11,17 @@ const personSchema = new mongoose.Schema({
 
 const Person = new mongoose.model('Person', personSchema)
 
-mongoose.connect(url).then(res => {
+mongoose.connect(url).then(() => {
   console.log('mongodb connected')
   if (process.argv.length === 5){
     const person = new Person({
       name: process.argv[3],
       number: process.argv[4]
     })
-   return person.save().then( res => {
-     console.log(`Added ${person.name} number ${person.number} to phonebook.`)
-     mongoose.connection.close()
-   })
+    return person.save().then( () => {
+      console.log(`Added ${person.name} number ${person.number} to phonebook.`)
+      mongoose.connection.close()
+    })
   }
   if (process.argv.length === 3){
     console.log('Phonebook:')
